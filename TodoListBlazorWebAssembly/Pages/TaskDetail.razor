@@ -1,0 +1,23 @@
+﻿@page "/taskDetails/{TaskId}"
+@inject ITaskApiClient TaskApiClient;
+@using TodoList.Models;
+
+
+<h3>TaskDetail @TaskId</h3>
+
+<div>
+    @taskDetail.Name
+</div>
+
+
+@code {
+    [Parameter]
+    public string TaskId { get; set; }
+
+    private TasksModel taskDetail { get; set; } = new TasksModel();
+
+    protected async override Task OnInitializedAsync()
+    {
+        taskDetail = await TaskApiClient.GetTaskDetail(TaskId);
+    }
+}

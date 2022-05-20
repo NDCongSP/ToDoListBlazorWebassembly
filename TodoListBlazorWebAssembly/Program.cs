@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MudBlazor.Services;
 
 namespace TodoListBlazorWebAssembly
 {
@@ -20,7 +21,7 @@ namespace TodoListBlazorWebAssembly
             builder.Services.AddTransient<ITaskApiClient, TaskApiClient>();//Khởi tạo services mình tạo ra, thì mới inject vào các component sử dụng
             //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
-
+            builder.Services.AddMudServices();
             await builder.Build().RunAsync();
         }
     }

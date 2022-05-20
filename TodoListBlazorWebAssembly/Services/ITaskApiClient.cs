@@ -11,5 +11,10 @@ namespace TodoListBlazorWebAssembly
         Task<List<TasksModel>> GetTaskList();
 
         Task<TasksModel> GetTaskDetail(string id);
+        Task<int> UpdateTask(TasksModel _task);
+
+        Task<List<TasksModel>> GetTaskSearch(TaskListSearch taskListSearch);
+
+        Task<int> CreateNewTask(TasksModel tasksModel);
     }
 }

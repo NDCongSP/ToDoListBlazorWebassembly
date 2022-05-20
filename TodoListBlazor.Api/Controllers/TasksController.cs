@@ -37,10 +37,25 @@ namespace TodoListBlazor.Api.Controllers
             }
         }
 
+        ///api/task?name=ass&p2=werwe&..
+        [HttpGet]
+        [Route ("GetSearch")]
+        public async Task<IActionResult> GetTaskSearch([FromQuery] TaskListSearch taskListSearch)
+        {
+            var _result = await GlobalVariable.ConnectionDb.QueryAsync<TasksModel>($"select * from task where Name like '%{taskListSearch.Name}%'");
+
+            return Ok(_result);
+        }
+
         [HttpPost]
         [Route("Insert")]
         public async Task<IActionResult> CreateData([FromBody] TasksModel request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var _res = GlobalVariable.ConnectionDb.Execute(@"insert task(Name,Priority,Status) values (@Name,@Priority,@Status)", request);
             if (_res > 0)
             {

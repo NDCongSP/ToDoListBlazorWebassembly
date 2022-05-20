@@ -3,12 +3,50 @@
 @using TodoList.Models;
 
 
-<h3>TaskDetail @TaskId</h3>
+@if (taskDetail == null)
+{
+    <TodoListBlazorWebAssembly.Components.LoadingIndicator></TodoListBlazorWebAssembly.Components.LoadingIndicator>
+}
+else
+{
+    <tr>
+        <td>
+            <MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+        </td>
+        <td>
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+            <MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" />
+            <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.ShoppingCart" DisableElevation="true" />
+            <MudFab StartIcon="@Icons.Filled.Bookmark" Label="Bookmark" />
+            <MudFab StartIcon="@Icons.Material.Filled.Save" Disabled="true" />
+        </td>
+    </tr>
+    <tr>
+        <MudText Typo="Typo.h6">MudBlazor is @Text</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ButtonOnClick">@ButtonText</MudButton>
+    </tr>
+    
 
-<div>
-    @taskDetail.Name
-</div>
-
+    <h1>Task Detail</h1>
+    <table class="table">
+        <tr>
+            <td>Name</td>
+            <td>@taskDetail.Name</td>
+        </tr>
+        <tr>
+            <td>Priority</td>
+            <td>@taskDetail.Priority</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>@taskDetail.Status</td>
+        </tr>
+        <tr>
+            <td>Created Date</td>
+            <td>@taskDetail.CreatedDate</td>
+        </tr>
+    </table>
+}
 
 @code {
     [Parameter]
@@ -19,5 +57,23 @@
     protected async override Task OnInitializedAsync()
     {
         taskDetail = await TaskApiClient.GetTaskDetail(TaskId);
+    }
+
+    private List<BreadcrumbItem> _items = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Home", href: "#", icon: Icons.Material.Filled.Home),
+        new BreadcrumbItem("Videos", href: "#", icon: Icons.Material.Filled.VideoLibrary),
+        new BreadcrumbItem("Create", href: null, disabled: true, icon: Icons.Material.Filled.Create)
+    };
+
+    private string Text { get; set; }
+    private string ButtonText { get; set; }
+    private int ButtonClicked { get; set; }
+
+    private void ButtonOnClick()
+    {
+        ButtonClicked += 1;
+        Text = $"Awesome {ButtonClicked}";
+        ButtonText = "Click me again";
     }
 }
